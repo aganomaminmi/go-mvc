@@ -9,18 +9,16 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-
 func main() {
-  r := chi.NewRouter()
-  r.Use(middleware.RequestID)
-  r.Use(middleware.Logger)
-  r.Use(middleware.Recoverer)
+	r := chi.NewRouter()
+	r.Use(middleware.RequestID)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 
-  NewRoutes(r)
-  database.Init()
+	NewRoutes(r)
+	database.Init()
 
-  if err := http.ListenAndServe(":9000", r); err !=nil {
-    log.Fatal(err)
-  }
+	if err := http.ListenAndServe(":9000", r); err != nil {
+		log.Fatal(err)
+	}
 }
-
