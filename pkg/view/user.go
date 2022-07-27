@@ -2,6 +2,7 @@ package view
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/aganomaminmi/go-mvc/pkg/model"
 )
@@ -15,18 +16,18 @@ type UserView struct {
 	Sex       string `json:"sex"`
 }
 
-func (UserView) Create(u model.User) []byte {
-	usrVi := UserView{
+func (UserView) Create(u model.User) ([]byte, error) {
+	usrVw := UserView{
 		ID:        u.ID,
-		FirstName: u.FirstName.String,
-		LastName:  u.LastName.String,
+		FirstName: u.FirstName,
+		LastName:  u.LastName,
 		Email:     u.Email,
 		Age:       int(u.Age.Int16),
 		Sex:       u.Sex.String,
 	}
-	vi, err := json.Marshal(usrVi)
+	vw, err := json.Marshal(usrVw)
 	if err != nil {
-		return []byte("Unknown error occurred.")
+		return vw, fmt.Errorf("Unknown error occurred")
 	}
-	return vi
+	return vw, nil
 }
