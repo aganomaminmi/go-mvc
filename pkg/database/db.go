@@ -9,22 +9,21 @@ import (
 	"gorm.io/gorm"
 )
 
-var Db *gorm.DB
+var DB *gorm.DB
 
 func Init() {
-	Db = DbNew()
+	DB = DBNew()
 }
 
-func DbNew() *gorm.DB {
-	envErr := godotenv.Load("../.env")
-	if envErr != nil {
-		log.Fatal(envErr)
+func DBNew() *gorm.DB {
+	if err := godotenv.Load("../.env"); err != nil {
+		log.Fatal(err)
 		os.Exit(1)
 	}
 
 	USER := os.Getenv("DATABASE_USER")
 	PASS := os.Getenv("DATABASE_PASS")
-	PROTOCOL := "tcp(127.0.0.1:3306)"
+	PROTOCOL := os.Getenv("DATABASE_PROTOCOL")
 	DBNAME := os.Getenv("DATABASE_NAME")
 	QUERY := "charset=utf8mb4&parseTime=True&loc=Local"
 

@@ -16,8 +16,8 @@ type UserView struct {
 	Sex       string `json:"sex"`
 }
 
-func (UserView) Create(u model.User) ([]byte, error) {
-	usrVw := UserView{
+func NewUserView(u model.User) UserView {
+	return UserView{
 		ID:        u.ID,
 		FirstName: u.FirstName,
 		LastName:  u.LastName,
@@ -25,9 +25,12 @@ func (UserView) Create(u model.User) ([]byte, error) {
 		Age:       int(u.Age.Int16),
 		Sex:       u.Sex.String,
 	}
-	vw, err := json.Marshal(usrVw)
+}
+
+func (u UserView) ToJSON() ([]byte, error) {
+	JSON, err := json.Marshal(u)
 	if err != nil {
-		return vw, fmt.Errorf("Unknown error occurred")
+		return JSON, fmt.Errorf("Unknown error occurred")
 	}
-	return vw, nil
+	return JSON, nil
 }
