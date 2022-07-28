@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/aganomaminmi/go-mvc/pkg/database"
 )
@@ -16,6 +17,8 @@ type User struct {
 	Email     string         `gorm:"column:email;not_null;type:varchar;size:255;"`
 	Age       sql.NullInt16  `gorm:"column:age;type:int;"`
 	Sex       sql.NullString `gorm:"column:sex;type:varchar;size:25;"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func (u *User) Get(i string) error {

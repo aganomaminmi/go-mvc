@@ -3,17 +3,20 @@ package view
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/aganomaminmi/go-mvc/pkg/model"
 )
 
 type UserView struct {
-	ID        int    `json:"id"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	Age       int    `json:"age"`
-	Sex       string `json:"sex"`
+	ID        int       `json:"id"`
+	FirstName string    `json:"firstName"`
+	LastName  string    `json:"lastName"`
+	Email     string    `json:"email"`
+	Age       int       `json:"age"`
+	Sex       string    `json:"sex"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func NewUserView(u model.User) UserView {
@@ -24,6 +27,8 @@ func NewUserView(u model.User) UserView {
 		Email:     u.Email,
 		Age:       int(u.Age.Int16),
 		Sex:       u.Sex.String,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
 	}
 }
 
