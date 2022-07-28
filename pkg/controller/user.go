@@ -18,7 +18,7 @@ func GetUser(w http.ResponseWriter, i string) {
 		return
 	}
 
-	JSON, err := view.NewUserView(usr).ToJSON()
+	j, err := view.NewUserView(usr).ToJSON()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -26,7 +26,7 @@ func GetUser(w http.ResponseWriter, i string) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(JSON)
+	w.Write(j)
 }
 
 type UserNew struct {
@@ -73,7 +73,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	JSON, err := view.NewUserView(usr).ToJSON()
+	j, err := view.NewUserView(usr).ToJSON()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
@@ -81,5 +81,5 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(JSON)
+	w.Write(j)
 }

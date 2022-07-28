@@ -33,9 +33,9 @@ func NewUserView(u model.User) UserView {
 }
 
 func (u UserView) ToJSON() ([]byte, error) {
-	JSON, err := json.Marshal(u)
+	j, err := json.Marshal(u)
 	if err != nil {
-		return JSON, fmt.Errorf("Unknown error occurred")
+		return j, fmt.Errorf("Unknown error occurred")
 	}
-	return JSON, nil
+	return j, nil
 }
