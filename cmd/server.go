@@ -18,6 +18,8 @@ func main() {
 	NewRoutes(r)
 	database.Init()
 
+	log.Println("Api server run.")
+
 	if err := http.ListenAndServe(":9000", r); err != nil {
 		log.Fatal(err)
 	}
