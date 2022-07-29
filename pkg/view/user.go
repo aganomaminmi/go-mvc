@@ -32,6 +32,19 @@ func NewUserView(u model.User) UserView {
 	}
 }
 
+func NewUsersViewJSON(us []model.User) ([]byte, error) {
+	usrVs := []UserView{}
+	for _, v := range us {
+		usrVs = append(usrVs, NewUserView(v))
+	}
+
+	j, err := json.Marshal(usrVs)
+	if err != nil {
+		return j, fmt.Errorf("Unknown error occurred")
+	}
+	return j, nil
+}
+
 func (u UserView) ToJSON() ([]byte, error) {
 	j, err := json.Marshal(u)
 	if err != nil {

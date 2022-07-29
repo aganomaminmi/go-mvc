@@ -35,6 +35,15 @@ func (u *User) Get(i string) error {
 	return nil
 }
 
+func GetAllUser() ([]User, error) {
+	usrs := []User{}
+	if err := database.DB.Find(&usrs).Error; err != nil {
+		return usrs, fmt.Errorf("Not found %d", err)
+
+	}
+	return usrs, nil
+}
+
 func (u *User) Save() error {
 	if u.Email == "" {
 		return fmt.Errorf("error: %s code=%d", "Invalid email", http.StatusBadRequest)

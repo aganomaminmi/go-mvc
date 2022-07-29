@@ -9,6 +9,27 @@ import (
 	"github.com/aganomaminmi/go-mvc/pkg/view"
 )
 
+func GetUsers(w http.ResponseWriter, r *http.Request) {
+	usrs, err := model.GetAllUser()
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	j, err := view.NewUsersViewJSON(usrs)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
+}
+
 func GetUser(w http.ResponseWriter, i string) {
 	w.Header().Set("Content-Type", "application/json")
 	usr := model.User{}

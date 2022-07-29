@@ -4,7 +4,8 @@ ENV GOPATH /go
 WORKDIR /
 
 COPY ./go.mod ./go.mod ./
-RUN go mod download
+RUN go mod download \
+  && go install github.com/cosmtrek/air@v1.27.3
 
 # dockerize
 RUN apt-get update && apt-get install -y wget
