@@ -3,10 +3,10 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN go build -o main
+RUN CGO_ENABLED=0 GO111MODULE=on go build -o server cmd/server.go cmd/router.go
 
 FROM alpine:3.13
 WORKDIR /app
-COPY --from=builder /app/main .
+COPY --from=builder /app/server .
 COPY .env .
-CMD [ "/app/main" ]
+CMD [ "/app/server" ]
