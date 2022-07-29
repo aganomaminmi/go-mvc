@@ -1,7 +1,6 @@
 version: '3.8'
 services:
   api:
-    container_name: go-mvc
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -14,10 +13,15 @@ services:
     volumes:
       - ./:/go/src
     working_dir: /go/src
-    # networks:
-    #   - go-mvc 
+    entrypoint:
+      - dockerize
+      - -timeout
+      - 60s
+      - -wait
+      - tcp://mysql:3306
+    command: "sh -c \"dbmate migrate && go run cmd/server.go cmd/router.go\""
+
   mysql:
-    container_name: go-mvc-mysql
     image: mysql:5.7
     platform: linux/x86_84
     environment:
@@ -29,19 +33,4 @@ services:
       - ./db:/db
     ports:
       - 3306:3306
-    # networks:
-    #   - go-mvc
-  migrate:
-    container_name: go-mvc-dbmate
-    image: amacneil/dbmate
-    env_file:
-      - .env
-    depends_on:
-      - mysql
-    volumes:
-      - ./db:/migration/db
-    command: "dbmate migrate"
 
-# networks:
-#   go-mvc:
-#     external: true
