@@ -3,7 +3,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/dev/Dockerfile
     ports:
       - 9000:9000
     env_file:
