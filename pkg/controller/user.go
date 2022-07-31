@@ -10,7 +10,18 @@ import (
 )
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-	usrs, err := model.GetAllUser()
+	pq, err := NewPagingQuery(r)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	p := model.Page{
+		PageSize:    pq.PageSize,
+		CurrentPage: pq.Page,
+	}
+	usrs, err := model.GetAllUser(&p)
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
@@ -19,7 +30,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	j, err := view.NewUsersViewJSON(usrs)
+	j, err := view.NewUsersViewJSON(usrs, p)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))

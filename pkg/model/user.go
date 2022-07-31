@@ -35,10 +35,19 @@ func (u *User) Get(i string) error {
 	return nil
 }
 
-func GetAllUser() ([]User, error) {
+func GetAllUser(pg *Page) ([]User, error) {
 	usrs := []User{}
-	if err := database.DB.Find(&usrs).Error; err != nil {
-		return usrs, fmt.Errorf("Not found %d", err)
+	scps, err := pg.Pagenate()
+	if err != nil {
+		return usrs, fmt.Errorf("error: %s code=%d", "Invalid query"+err.Error(), http.StatusBadRequest)
+	}
+
+	rws := database.DB.Find(&usrs).RowsAffected
+	pg.CalcTotalPage(rws)
+
+	rslt := database.DB.Scopes(scps).Find(&usrs)
+	if rslt.Error != nil {
+		return usrs, fmt.Errorf("Not found %d", rslt.Error)
 
 	}
 	return usrs, nil
