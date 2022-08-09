@@ -10,12 +10,7 @@ import (
 )
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-	pq, err := NewPagingQuery(r)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	}
+	pq := NewPagingQuery(r)
 
 	p := model.Page{
 		PageSize:    pq.PageSize,

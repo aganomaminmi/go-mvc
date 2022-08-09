@@ -10,11 +10,11 @@ type PagingQuery struct {
 	PageSize int64
 }
 
-func NewPagingQuery(r *http.Request) (PagingQuery, error) {
+func NewPagingQuery(r *http.Request) PagingQuery {
 	q := r.URL.Query()
 	pg, err := strconv.Atoi(q.Get("page"))
 	if err != nil {
-		return PagingQuery{}, err
+		pg = 1
 	}
 	if pg == 0 {
 		pg = 1
@@ -22,12 +22,12 @@ func NewPagingQuery(r *http.Request) (PagingQuery, error) {
 
 	pgSz, err := strconv.Atoi(q.Get("page_size"))
 	if err != nil {
-		return PagingQuery{}, err
+		pgSz = 10
 	}
 
 	return PagingQuery{
 		Page:     int64(pg),
 		PageSize: int64(pgSz),
-	}, nil
+	}
 
 }
