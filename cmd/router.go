@@ -18,6 +18,8 @@ func NewRoutes(r chi.Router) {
 
 	r.Route("/users", func(r chi.Router) {
 
+		r.Get("/", controller.GetUsers)
+
 		r.Post("/", func(w http.ResponseWriter, r *http.Request) {
 			controller.CreateUser(w, r)
 		})

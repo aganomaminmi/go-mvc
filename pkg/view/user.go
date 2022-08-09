@@ -32,6 +32,25 @@ func NewUserView(u model.User) UserView {
 	}
 }
 
+type UsersView struct {
+	Users    []UserView   `json:"users"`
+	PageInfo PageInfoView `json"pageInfo"`
+}
+
+func NewUsersViewJSON(us []model.User, p model.Page) ([]byte, error) {
+	usrs := []UserView{}
+	for _, v := range us {
+		usrs = append(usrs, NewUserView(v))
+	}
+	usrsView := UsersView{Users: usrs, PageInfo: NewPageInfoView(p)}
+
+	j, err := json.Marshal(usrsView)
+	if err != nil {
+		return j, fmt.Errorf("Unknown error occurred")
+	}
+	return j, nil
+}
+
 func (u UserView) ToJSON() ([]byte, error) {
 	j, err := json.Marshal(u)
 	if err != nil {

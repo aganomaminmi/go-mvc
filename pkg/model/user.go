@@ -35,6 +35,24 @@ func (u *User) Get(i string) error {
 	return nil
 }
 
+func GetAllUser(pg *Page) ([]User, error) {
+	usrs := []User{}
+	scps, err := pg.Pagenate()
+	if err != nil {
+		return usrs, fmt.Errorf("error: %s code=%d", "Invalid query"+err.Error(), http.StatusBadRequest)
+	}
+
+	rws := database.DB.Find(&usrs).RowsAffected
+	pg.CalcTotalPage(rws)
+
+	rslt := database.DB.Scopes(scps).Find(&usrs)
+	if rslt.Error != nil {
+		return usrs, fmt.Errorf("Not found %d", rslt.Error)
+
+	}
+	return usrs, nil
+}
+
 func (u *User) Save() error {
 	if u.Email == "" {
 		return fmt.Errorf("error: %s code=%d", "Invalid email", http.StatusBadRequest)
