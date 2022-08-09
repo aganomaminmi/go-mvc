@@ -29,6 +29,8 @@ services:
 
   migrate:
     image: amacneil/dbmate
+    depends_on: 
+      - mysql
     volumes:
       - ./db:/db
       - ./.env:/.env
