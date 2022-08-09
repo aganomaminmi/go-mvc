@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+    container_name: go_mvc_api
+    ports:
+      - 9000:9000
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    volumes:
+      - ./:/go/src
+    working_dir: /go/src
+    command: go run cmd/server.go cmd/router.go
+
+  mysql:
+    image: mysql:5.7
+    container_name: go_mvc_mysql
+    environment:
+      MYSQL_DATABASE: go_mvc_db
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - ./db:/db
+    ports:
+      - 3306:3306
+
+  migrate:
+    image: amacneil/dbmate
+    depends_on: 
+      - mysql
+    volumes:
+      - ./db:/db
+      - ./.env:/.env
+    command: migrate
+
+  dockerize:
+    image: jwilder/dockerize:0.6.1
+    command: dockerize
+
